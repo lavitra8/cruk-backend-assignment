@@ -1,6 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import * as sns from '@aws-cdk/aws-sns';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as snsSubscriptions from '@aws-cdk/aws-sns-subscriptions';
 
 export class RecruitmentNodejsTestStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -21,6 +22,11 @@ export class RecruitmentNodejsTestStack extends cdk.Stack {
       }
     });
 
-    
+    // Give publish permissions
+    donationTopic.grantPublish(donationFunction);
+
+    // Subscribe an email to the topic
+    donationTopic.addSubscription(new snsSubscriptions.EmailSubscription('contactsubodhkharat@gmail.com'));
+
   }
 }
